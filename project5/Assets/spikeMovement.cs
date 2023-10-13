@@ -56,6 +56,7 @@ public class spikeMovement : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D col)
     {
+        //this if checks if it hit the left wall/player
         if((col.gameObject.CompareTag("platforms")||col.gameObject.CompareTag("Player")) && stabbing)
         {
             if(smoothstab.isOn){
@@ -66,6 +67,7 @@ public class spikeMovement : MonoBehaviour
             stabTime = 0;
             stabbing = false;
         }
+        //this is the code for when the spike retracts, resetting for next stab
         else if((col.gameObject.CompareTag("platforms")) && !stabbing){
             movement = new Vector2(0, 0);
             if(smoothstab.isOn){
