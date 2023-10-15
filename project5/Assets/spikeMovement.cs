@@ -13,11 +13,18 @@ public class spikeMovement : MonoBehaviour
     public bool stabbing = false;
     public Vector2 movement = new Vector2(0, 0);
     public Toggle smoothstab;
-
+    public Toggle vibrateToggle;
     public float waitTime = 0.0f;
     public bool waiting = false;
+
+    public float intensity;
+    public AudioClip vibrateClip;
+    public AudioClip moveClip;
+    Vector3 startPos;
+    public AudioSource src;
     void Start()
     {
+        startPos = transform.position;
 
     }
 
@@ -27,7 +34,22 @@ public class spikeMovement : MonoBehaviour
         //all movement is managed by Vector2 movement
         //set movement = new Vector2(speed,0) to go right
         //set movement = new Vector2(-speed,0) to go left 
+
+        if(vibrateToggle.isOn && stabTime < 5.0f)
+        {
+            Vector3 randomOffset = UnityEngine.Random.insideUnitSphere * intensity;
+
+            // Apply the offset to the sprite's position
+            transform.position = startPos + randomOffset;
+            src.PlayOneShot(vibrateClip);
+        }
+        else if (!vibrateToggle.isOn)
+        {
+            src.Stop();
+        }
         if(stabTime >= 5.0f){
+            src.Stop();
+            src.PlayOneShot(moveClip);
             //first toggle, makes spear slow down slightly in flight
             if(smoothstab.isOn){
                speed -= 0.5f; 
@@ -50,10 +72,10 @@ public class spikeMovement : MonoBehaviour
         }
         gameObject.GetComponent<Rigidbody2D>().velocity = movement;
     }
-    private void FixedUpdate()
-    {
-        
-    }
+  
+
+
+
     private void OnCollisionEnter2D(Collision2D col)
     {
         //this if checks if it hit the left wall/player
