@@ -7,6 +7,8 @@ TagManager:
   - magnet
   - platforms
   - floor
+  - spike
+  - nearMiss
   layers:
   - Default
   - TransparentFX
